@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>БЕРЕЗА — особистий медіа-проєкт</title>
+  <meta name="description" content="Особистий медіа-проєкт: колонки, розслідування, відео і подкаст.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MASTHEAD ============ -->
+<header class="masthead">
+  <div class="masthead-grid">
+    <div class="meta-l">№ 184 · Вівторок<br><strong>29 квітня 2026</strong></div>
+    <div class="logo">
+      <div class="kicker">особистий медіа-проєкт</div>
+      <h1>БЕРЕЗА<span>.</span></h1>
+      <div class="subline">Колонки · Розслідування · Розмови</div>
+    </div>
+    <div class="meta-r">Київ · <strong>9°C</strong><br>Тираж · 184 700 читачів</div>
+  </div>
+</header>
+
+<!-- ============ NAV ============ -->
+<nav class="primary" aria-label="Головна навігація">
+  <div class="nav-inner">
+    <ul>
+      <li><a href="index.html" class="active">Головна</a></li>
+      <li><a href="#">Колонки</a></li>
+      <li><a href="#">Розслідування</a></li>
+      <li><a href="#">Відео</a></li>
+      <li><a href="#">Подкаст</a></li>
+      <li><a href="pages/about.html">Про автора</a></li>
+    </ul>
+    <button class="search-btn" aria-label="Пошук">Пошук <span aria-hidden="true">↗</span></button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero container">
+  <div class="section-label">Головна публікація · <strong>сьогодні</strong></div>
+  <div class="hero-grid">
+    <article class="hero-main" data-hero-main></article>
+    <aside class="hero-side" data-hero-side aria-label="Топ матеріали"></aside>
+  </div>
+</section>
+
+<!-- ============ COLUMNS ============ -->
+<section class="columns container">
+  <div class="section-label">Авторські колонки · <strong>цього тижня</strong></div>
+  <div class="columns-grid" data-columns></div>
+</section>
+
+<!-- ============ VIDEO ============ -->
+<section class="video-section">
+  <div class="container">
+    <div class="section-label">Відео-канал · <strong>YouTube</strong></div>
+    <div class="video-grid" data-videos></div>
+  </div>
+</section>
+
+<!-- ============ QUOTE ============ -->
+<section class="quote-section container" data-quote></section>
+
+<!-- ============ LATEST ============ -->
+<section class="latest container">
+  <div class="section-label">Свіжі матеріали · <strong>усі рубрики</strong></div>
+  <div class="latest-grid" data-latest></div>
+</section>
+
+<!-- ============ SUBSCRIBE ============ -->
+<section class="subscribe">
+  <div class="container">
+    <div class="subscribe-inner">
+      <div>
+        <h2>Щотижневий <mark>дайджест</mark> — без зайвого шуму.</h2>
+        <p>Найважливіше за тиждень: одна колонка, два розслідування, кілька рекомендацій. Без сповіщень о третій ночі. Можна відписатися в один клік.</p>
+        <form class="sub-form" onsubmit="event.preventDefault(); this.querySelector('input').value=''; this.querySelector('button').textContent='готово ✓';">
+          <input type="email" placeholder="email@example.com" required>
+          <button type="submit">Підписатися</button>
+        </form>
+      </div>
+      <div class="channels" data-channels></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>БЕРЕЗА<span>.</span></h3>
+        <p>Особистий медіа-проєкт: колонки, розслідування, відео і подкаст. Без редакцій і прес-секретарів. Незалежне фінансування — від читачів.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Розділи</h4>
+        <ul>
+          <li><a href="#">Колонки</a></li>
+          <li><a href="#">Розслідування</a></li>
+          <li><a href="#">Подкаст</a></li>
+          <li><a href="#">Архів</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Проєкт</h4>
+        <ul>
+          <li><a href="pages/about.html">Про автора</a></li>
+          <li><a href="#">Редакційна політика</a></li>
+          <li><a href="#">Підтримати</a></li>
+          <li><a href="#">Контакти</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Контакти</h4>
+        <ul>
+          <li><a href="mailto:hello@bereza.media">hello@bereza.media</a></li>
+          <li><a href="mailto:tip@bereza.media">tip@bereza.media</a></li>
+          <li><a href="#">PGP-ключ ↗</a></li>
+          <li><a href="#">SecureDrop ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 BEREZA.MEDIA · Київ</span>
+      <span>Зроблено з турботою про факт</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ ВБУДОВАНИЙ ФОЛБЕК ДАНИХ ============
+     Дублює data/content.json. Потрібен лише для відкриття
+     index.html напряму з диска (file://), де fetch блокується
+     браузером. На сервері використовується JSON-файл.
+     ================================================ -->
+<script>
+window.__BEREZA_DATA__ = {
+  "ticker": [
+    "Прямий ефір на YouTube — щосереди о 20:00",
+    "Новий випуск подкасту вже доступний",
+    "Розслідування тижня: контракти на закупівлю",
+    "Підпишіться на розсилку — щотижневий дайджест"
+  ],
+  "hero": {
+    "tag": "розслідування",
+    "tagUrgent": true,
+    "title": "Як тендери перетворюють комуналку на чорну скриню — і що з цим робити",
+    "lede": "Шість місяців роботи з документами, дев'ять інтерв'ю з посадовцями, два запити до прокуратури. Розповідаємо, куди насправді йдуть гроші платників.",
+    "author": "Б. Береза",
+    "readTime": "14 хв",
+    "date": "29.04.2026",
+    "url": "pages/article.html"
+  },
+  "heroSide": [
+    { "cat": "аналітика", "title": "Чому опитування більше нічого не вимірюють", "date": "27.04 · 8 хв", "url": "#" },
+    { "cat": "колонка", "title": "Лист тим, хто пише мені на тисячу слів про «зраду»", "date": "25.04 · 5 хв", "url": "#" },
+    { "cat": "подкаст", "title": "Розмова з О. Г. — про реформу армії, після штабу", "date": "23.04 · 1 год 12 хв", "url": "#" },
+    { "cat": "репортаж", "title": "Один день у місцевому ТЦК: що бачать ті, хто там працює", "date": "21.04 · 11 хв", "url": "#" }
+  ],
+  "columns": [
+    { "cat": "Політика", "title": "Коаліція без вибору: чому в парламенті знову нікого слухати", "excerpt": "Десять років стабільної динаміки: одна група хоче популізму, інша — мовчання, третя — нікого не дратувати. І жодна не хоче відповідати за слова.", "date": "22.04.2026" },
+    { "cat": "Суспільство", "title": "Що таке «втома фронту» і чому її не лікують прес-релізом", "excerpt": "Розмова з трьома командирами, психологом і двома волонтерами. Те, про що рідко говорять у прямому ефірі — але що чутно в кожному дзвінку додому.", "date": "19.04.2026" },
+    { "cat": "Медіа", "title": "Як телеграм-каналам вдалося стати джерелом, якому ми не довіряємо — і все одно читаємо", "excerpt": "Парадокс довіри в епоху, коли швидкість важливіша за факт. Спостереження журналіста, який сам інколи потрапляє в цю пастку.", "date": "17.04.2026" }
+  ],
+  "videos": [
+    { "size": "large", "duration": "42:18", "title": "Великий розбір бюджету-2026: де насправді знайшли гроші", "meta": "147 тис. переглядів · 3 дні тому" },
+    { "size": "small", "duration": "14:02", "title": "Що насправді сказав канцлер — і що почули в Києві", "meta": "62 тис. · тиждень тому" },
+    { "size": "small", "duration": "08:51", "title": "Коротко про головне: 5 хвилин, які треба знати", "meta": "38 тис. · 2 дні тому" }
+  ],
+  "quote": {
+    "text": "Журналістика — це не «розповідати, як було». Це <em>не давати забути</em>, як було насправді.",
+    "source": "Б. Береза · з есе «Те, що залишається»"
+  },
+  "latest": [
+    { "cat": "КОЛОНКА", "date": "16.04", "title": "Чому ми перестали сперечатись по суті", "action": "→ читати" },
+    { "cat": "РОЗСЛІДУВАННЯ", "date": "14.04", "title": "Маршрути допомоги: де губляться 12% поставок", "action": "→ читати" },
+    { "cat": "ІНТЕРВ'Ю", "date": "11.04", "title": "«Ми навчились говорити коротко». Розмова з ветераном-комбатом", "action": "→ читати" },
+    { "cat": "АНАЛІТИКА", "date": "09.04", "title": "Чотири сценарії 2026: що змінює виборчий рік", "action": "→ читати" },
+    { "cat": "РЕПОРТАЖ", "date": "06.04", "title": "Дорога додому: одна станція, дев'ять історій", "action": "→ читати" },
+    { "cat": "ПОДКАСТ", "date": "04.04", "title": "№37 · Економіст про те, чому інфляцію не можна «перетерпіти»", "action": "→ слухати" },
+    { "cat": "КОЛОНКА", "date": "02.04", "title": "Як перестати бути «глядачем своєї країни»", "action": "→ читати" },
+    { "cat": "ЕСЕ", "date": "30.03", "title": "Те, що залишається — короткий маніфест", "action": "→ читати" }
+  ],
+  "channels": [
+    { "icon": "YT", "name": "YouTube", "count": "218K" },
+    { "icon": "TG", "name": "Telegram", "count": "94K" },
+    { "icon": "FB", "name": "Facebook", "count": "168K" },
+    { "icon": "X",  "name": "X / Twitter", "count": "31K" }
+  ]
+};
+</script>
+
+<script src="js/render.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

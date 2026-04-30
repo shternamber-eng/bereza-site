@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Про автора — БЕРЕЗА</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>Про проєкт · редакційні принципи · контакти для джерел</span>
+        <span>Підпишіться на розсилку — щотижневий дайджест</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="masthead-grid">
+    <div class="meta-l">№ 184 · Вівторок<br><strong>29 квітня 2026</strong></div>
+    <div class="logo">
+      <div class="kicker">особистий медіа-проєкт</div>
+      <h1><a href="../index.html">БЕРЕЗА<span>.</span></a></h1>
+      <div class="subline">Колонки · Розслідування · Розмови</div>
+    </div>
+    <div class="meta-r">Київ · <strong>9°C</strong><br>Тираж · 184 700 читачів</div>
+  </div>
+</header>
+
+<nav class="primary" aria-label="Головна навігація">
+  <div class="nav-inner">
+    <ul>
+      <li><a href="../index.html">Головна</a></li>
+      <li><a href="#">Колонки</a></li>
+      <li><a href="#">Розслідування</a></li>
+      <li><a href="#">Відео</a></li>
+      <li><a href="#">Подкаст</a></li>
+      <li><a href="about.html" class="active">Про автора</a></li>
+    </ul>
+    <button class="search-btn" aria-label="Пошук">Пошук <span aria-hidden="true">↗</span></button>
+  </div>
+</nav>
+
+<section class="container about-hero">
+  <div class="about-portrait" aria-hidden="true"></div>
+  <div class="about-text">
+    <h1>Про <span>проєкт</span></h1>
+    <p>Це особистий медіа-проєкт: колонки, інтерв'ю, розслідування і подкаст. Без редакцій, без прес-секретарів, без редакційного завдання згори.</p>
+    <p>Тут публікуються матеріали, які я хотів би прочитати сам — про політику, суспільство, медіа і людей, які щось роблять, поки інші коментують.</p>
+    <p>Незалежне фінансування — від читачів. Ніяких рекламних матеріалів, замовних статей або «спецпроєктів» з прихованою метою.</p>
+  </div>
+</section>
+
+<section class="container about-facts">
+  <div class="about-fact">
+    <div class="num">12</div>
+    <div class="label">років у журналістиці</div>
+  </div>
+  <div class="about-fact">
+    <div class="num">184K</div>
+    <div class="label">постійних читачів</div>
+  </div>
+  <div class="about-fact">
+    <div class="num">37</div>
+    <div class="label">випусків подкасту</div>
+  </div>
+  <div class="about-fact">
+    <div class="num">100%</div>
+    <div class="label">фінансування від аудиторії</div>
+  </div>
+</section>
+
+<section class="quote-section container">
+  <blockquote>Журналістика — це не «розповідати, як було». Це <em>не давати забути</em>, як було насправді.</blockquote>
+  <div class="qmeta">з есе «Те, що залишається»</div>
+</section>
+
+<section class="subscribe">
+  <div class="container">
+    <div class="subscribe-inner">
+      <div>
+        <h2>Зв'язок із <mark>джерелом</mark>.</h2>
+        <p>Якщо у вас є інформація, яка має значення — напишіть. Усі повідомлення конфіденційні. Для чутливих матеріалів використовуйте PGP або SecureDrop.</p>
+        <form class="sub-form" onsubmit="event.preventDefault();">
+          <input type="email" placeholder="ваш email">
+          <button type="submit">Написати</button>
+        </form>
+      </div>
+      <div class="channels">
+        <a class="channel" href="mailto:tip@bereza.media">
+          <div class="left">
+            <div class="icon">@</div>
+            <div class="name">tip@bereza.media</div>
+          </div>
+          <div class="count">для джерел</div>
+        </a>
+        <a class="channel" href="#">
+          <div class="left">
+            <div class="icon">PGP</div>
+            <div class="name">PGP-ключ</div>
+          </div>
+          <div class="count">завантажити ↗</div>
+        </a>
+        <a class="channel" href="#">
+          <div class="left">
+            <div class="icon">SD</div>
+            <div class="name">SecureDrop</div>
+          </div>
+          <div class="count">через Tor ↗</div>
+        </a>
+        <a class="channel" href="#">
+          <div class="left">
+            <div class="icon">Sg</div>
+            <div class="name">Signal</div>
+          </div>
+          <div class="count">за запитом</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3><a href="../index.html">БЕРЕЗА<span>.</span></a></h3>
+        <p>Особистий медіа-проєкт: колонки, розслідування, відео і подкаст.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Розділи</h4>
+        <ul>
+          <li><a href="#">Колонки</a></li>
+          <li><a href="#">Розслідування</a></li>
+          <li><a href="#">Подкаст</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Проєкт</h4>
+        <ul>
+          <li><a href="about.html">Про автора</a></li>
+          <li><a href="#">Підтримати</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Контакти</h4>
+        <ul>
+          <li><a href="mailto:hello@bereza.media">hello@bereza.media</a></li>
+          <li><a href="mailto:tip@bereza.media">tip@bereza.media</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 BEREZA.MEDIA · Київ</span>
+      <span>Зроблено з турботою про факт</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
