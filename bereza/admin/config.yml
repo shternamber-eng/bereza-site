@@ -1,0 +1,248 @@
+# ============================================================
+# Sveltia CMS — конфігурація для БЕРЕЗА
+# ============================================================
+#
+# НАЛАШТУВАННЯ ПЕРЕД ПЕРШИМ ЗАПУСКОМ:
+#
+# 1. Створіть GitHub OAuth App:
+#    https://github.com/settings/developers → "New OAuth App"
+#    - Homepage URL: https://ВАШ-САЙТ.pages.dev
+#    - Authorization callback URL: https://auth.sveltiacms.com/callback
+#
+# 2. Збережіть Client ID (він потрібен нижче).
+#
+# 3. За потреби замініть base_url нижче або зареєструйте
+#    свій OAuth App на https://auth.sveltiacms.com
+#
+# ============================================================
+
+backend:
+  name: github
+  repo: shternamber-eng/bereza-site
+  branch: main
+  base_url: https://auth.sveltiacms.com
+
+# Де зберігати завантажені медіафайли (відносно кореня репозиторію)
+media_folder: bereza/images/uploads
+# Публічний URL для цих файлів (відносно кореня сайту)
+public_folder: /images/uploads
+
+locale: uk
+
+# ============================================================
+# КОЛЕКЦІЇ КОНТЕНТУ
+# ============================================================
+collections:
+
+  # ----------------------------------------------------------
+  # 1. ГОЛОВНА СТОРІНКА — весь content.json
+  # ----------------------------------------------------------
+  - name: homepage
+    label: Головна сторінка
+    files:
+      - label: Контент головної
+        name: content
+        file: bereza/data/content.json
+        format: json
+        fields:
+
+          - label: Бігуча рядка (тікер)
+            name: ticker
+            widget: list
+            hint: Рядки, що прокручуються у верхній смузі
+            field:
+              label: Рядок
+              widget: string
+
+          - label: Головна публікація
+            name: hero
+            widget: object
+            fields:
+              - { label: Тег (напр. "розслідування"), name: tag, widget: string }
+              - { label: Позначка "Терміново" (червоний тег), name: tagUrgent, widget: boolean, default: false }
+              - { label: Заголовок, name: title, widget: string }
+              - { label: Лід (вступний абзац), name: lede, widget: text }
+              - { label: Автор, name: author, widget: string, default: "Б. Береза" }
+              - { label: Час читання (напр. "14 хв"), name: readTime, widget: string }
+              - { label: Дата (напр. "29.04.2026"), name: date, widget: string }
+              - label: URL статті
+                name: url
+                widget: string
+                hint: "Формат: pages/article.html?slug=назва-статті"
+
+          - label: Бокова панель — 4 матеріали
+            name: heroSide
+            widget: list
+            collapsed: true
+            fields:
+              - { label: Категорія, name: cat, widget: string }
+              - { label: Заголовок, name: title, widget: string }
+              - { label: Дата / час читання (напр. "27.04 · 8 хв"), name: date, widget: string }
+              - { label: URL, name: url, widget: string, default: "#" }
+
+          - label: Авторські колонки (3 шт.)
+            name: columns
+            widget: list
+            collapsed: true
+            fields:
+              - { label: Категорія, name: cat, widget: string }
+              - { label: Заголовок, name: title, widget: string }
+              - { label: Анонс, name: excerpt, widget: text }
+              - { label: Дата (напр. "22.04.2026"), name: date, widget: string }
+
+          - label: Відео (YouTube)
+            name: videos
+            widget: list
+            collapsed: true
+            fields:
+              - label: Розмір
+                name: size
+                widget: select
+                options:
+                  - { label: Великий (перше відео), value: large }
+                  - { label: Малий, value: small }
+              - { label: Тривалість (напр. "42:18"), name: duration, widget: string }
+              - { label: Заголовок, name: title, widget: string }
+              - { label: Метадані (перегляди і дата), name: meta, widget: string }
+
+          - label: Цитата
+            name: quote
+            widget: object
+            fields:
+              - label: Текст (підтримується <em>текст</em> для курсиву)
+                name: text
+                widget: text
+              - { label: Джерело, name: source, widget: string }
+
+          - label: Свіжі матеріали
+            name: latest
+            widget: list
+            collapsed: true
+            fields:
+              - { label: Категорія (великими літерами), name: cat, widget: string }
+              - { label: Дата (напр. "16.04"), name: date, widget: string }
+              - { label: Заголовок, name: title, widget: string }
+              - { label: Текст посилання (напр. "→ читати"), name: action, widget: string, default: "→ читати" }
+
+          - label: Соціальні мережі (кількість підписників)
+            name: channels
+            widget: list
+            collapsed: true
+            fields:
+              - { label: "Іконка (YT / TG / FB / X)", name: icon, widget: string }
+              - { label: Назва, name: name, widget: string }
+              - { label: Кількість (напр. "218K"), name: count, widget: string }
+
+  # ----------------------------------------------------------
+  # 2. НАЛАШТУВАННЯ САЙТУ — SEO і мастхед
+  # ----------------------------------------------------------
+  - name: settings
+    label: Налаштування сайту
+    files:
+      - label: SEO і шапка газети
+        name: site_settings
+        file: bereza/data/settings.json
+        format: json
+        fields:
+
+          - label: SEO
+            name: seo
+            widget: object
+            fields:
+              - { label: "Title головної сторінки", name: homeTitle, widget: string }
+              - { label: "Description головної сторінки", name: homeDescription, widget: text }
+              - { label: "Title сторінки «Про автора»", name: aboutTitle, widget: string }
+
+          - label: Шапка газети (мастхед)
+            name: masthead
+            widget: object
+            hint: "Оновлюйте щоразу перед виходом нового випуску"
+            fields:
+              - { label: Номер випуску, name: issueNumber, widget: string }
+              - { label: День тижня (напр. "Вівторок"), name: dayOfWeek, widget: string }
+              - { label: "Дата (напр. «29 квітня 2026»)", name: date, widget: string }
+              - { label: Місто, name: city, widget: string, default: "Київ" }
+              - { label: "Температура (напр. «9°C»)", name: temperature, widget: string }
+              - { label: "Тираж (напр. «184 700»)", name: circulation, widget: string }
+
+  # ----------------------------------------------------------
+  # 3. СТОРІНКА «ПРО АВТОРА»
+  # ----------------------------------------------------------
+  - name: about
+    label: Про автора
+    files:
+      - label: Контент сторінки
+        name: about_content
+        file: bereza/data/about.json
+        format: json
+        fields:
+
+          - label: Текст сторінки (підтримується Markdown)
+            name: bodyMarkdown
+            widget: markdown
+            hint: Кілька абзаців про проєкт. Підтримується жирний, курсив, заголовки.
+
+          - label: Факти (цифри)
+            name: facts
+            widget: list
+            collapsed: false
+            fields:
+              - { label: "Число (напр. «12» або «184K»)", name: num, widget: string }
+              - { label: Підпис, name: label, widget: string }
+
+          - label: Цитата
+            name: quote
+            widget: object
+            fields:
+              - { label: Текст, name: text, widget: text }
+              - { label: Джерело, name: source, widget: string }
+
+  # ----------------------------------------------------------
+  # 4. СТАТТІ — Markdown-файли
+  # ----------------------------------------------------------
+  - name: articles
+    label: Статті
+    label_singular: Стаття
+    folder: bereza/content/articles
+    create: true
+    slug: "{{slug}}"
+    format: frontmatter
+    extension: md
+    summary: "{{title}} · {{date}}"
+    sortable_fields: ["date", "title", "category"]
+    fields:
+      - { label: Заголовок, name: title, widget: string }
+      - label: Категорія
+        name: category
+        widget: select
+        options:
+          - { label: Розслідування, value: розслідування }
+          - { label: Колонка, value: колонка }
+          - { label: Аналітика, value: аналітика }
+          - { label: Репортаж, value: репортаж }
+          - { label: Інтерв'ю, value: "інтерв'ю" }
+          - { label: Подкаст, value: подкаст }
+          - { label: Есе, value: есе }
+        default: колонка
+      - { label: "Позначка «Терміново»", name: urgent, widget: boolean, default: false }
+      - { label: Лід (вступний абзац), name: lede, widget: text }
+      - { label: Автор, name: author, widget: string, default: "Б. Береза" }
+      - { label: "Час читання (напр. «14 хв»)", name: readTime, widget: string }
+      - { label: "Дата (напр. «29.04.2026»)", name: date, widget: string }
+      - label: Обкладинка
+        name: image
+        widget: image
+        required: false
+        hint: Завантажте зображення для анонсу статті
+      - label: Бокові факти (необов'язково)
+        name: sidebarFacts
+        widget: list
+        required: false
+        collapsed: true
+        hint: "Формат кожного рядка: «6 місяців · роботи з документами»"
+        field:
+          label: Факт
+          widget: string
+      - label: Текст статті
+        name: body
+        widget: markdown

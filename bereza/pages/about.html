@@ -58,13 +58,15 @@
   <div class="about-portrait" aria-hidden="true"></div>
   <div class="about-text">
     <h1>Про <span>проєкт</span></h1>
-    <p>Це особистий медіа-проєкт: колонки, інтерв'ю, розслідування і подкаст. Без редакцій, без прес-секретарів, без редакційного завдання згори.</p>
-    <p>Тут публікуються матеріали, які я хотів би прочитати сам — про політику, суспільство, медіа і людей, які щось роблять, поки інші коментують.</p>
-    <p>Незалежне фінансування — від читачів. Ніяких рекламних матеріалів, замовних статей або «спецпроєктів» з прихованою метою.</p>
+    <div data-about-body>
+      <p>Це особистий медіа-проєкт: колонки, інтерв'ю, розслідування і подкаст. Без редакцій, без прес-секретарів, без редакційного завдання згори.</p>
+      <p>Тут публікуються матеріали, які я хотів би прочитати сам — про політику, суспільство, медіа і людей, які щось роблять, поки інші коментують.</p>
+      <p>Незалежне фінансування — від читачів. Ніяких рекламних матеріалів, замовних статей або «спецпроєктів» з прихованою метою.</p>
+    </div>
   </div>
 </section>
 
-<section class="container about-facts">
+<section class="container about-facts" data-about-facts>
   <div class="about-fact">
     <div class="num">12</div>
     <div class="label">років у журналістиці</div>
@@ -83,7 +85,7 @@
   </div>
 </section>
 
-<section class="quote-section container">
+<section class="quote-section container" data-about-quote>
   <blockquote>Журналістика — це не «розповідати, як було». Це <em>не давати забути</em>, як було насправді.</blockquote>
   <div class="qmeta">з есе «Те, що залишається»</div>
 </section>
@@ -170,5 +172,9 @@
   </div>
 </footer>
 
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="../js/settings.js"></script>
+<script src="../js/about.js"></script>
 </body>
 </html>
