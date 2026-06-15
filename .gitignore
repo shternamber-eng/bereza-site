@@ -1,0 +1,8 @@
+node_modules/
+.next/
+.claude/
+*.zip
+*.webp
+
+# Локальные файлы с секретами — не коммитить
+import-tools/*.local.ps1
