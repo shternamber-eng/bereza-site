@@ -160,6 +160,9 @@ async function collectNewTelegramPosts(afterId) {
       if (!plain.trim()) continue;
 
       const dateMatch = block.match(/<time datetime="([^"]+)"/);
+      const photos = [...block.matchAll(/class="tgme_widget_message_photo_wrap[^"]*"\s+style="[^"]*background-image:url\('([^']+)'\)/g)].map(
+        (m) => m[1]
+      );
 
       found.push({
         msgId,
@@ -167,6 +170,7 @@ async function collectNewTelegramPosts(afterId) {
         title: deriveTelegramTitle(plain),
         date: dateMatch ? new Date(dateMatch[1]) : new Date(),
         content,
+        photos,
       });
     }
 
@@ -187,14 +191,53 @@ function authHeader() {
   return "Basic " + Buffer.from(`${user}:${appPassword}`).toString("base64");
 }
 
+async function uploadPhotoToWp(url, index) {
+  const res = await fetch(url, { headers: { "User-Agent": UA } });
+  if (!res.ok) throw new Error(`HTTP ${res.status} при скачивании фото`);
+  const buffer = Buffer.from(await res.arrayBuffer());
+  const contentType = res.headers.get("content-type") || "image/jpeg";
+  const ext = contentType.includes("png") ? "png" : "jpg";
+
+  const uploadRes = await fetch(`${WP_BASE_URL}/wp-json/wp/v2/media`, {
+    method: "POST",
+    headers: {
+      "Content-Type": contentType,
+      "Content-Disposition": `attachment; filename="telegram-${Date.now()}-${index}.${ext}"`,
+      Authorization: authHeader(),
+    },
+    body: buffer,
+  });
+
+  if (!uploadRes.ok) {
+    const text = await uploadRes.text();
+    throw new Error(`HTTP ${uploadRes.status}: ${text.slice(0, 200)}`);
+  }
+  const json = await uploadRes.json();
+  return { id: json.id, url: json.source_url };
+}
+
 async function publishPost(post) {
+  let mediaHtml = "";
+  let featuredMediaId = null;
+
+  for (const [index, photoUrl] of post.photos.entries()) {
+    try {
+      const media = await uploadPhotoToWp(photoUrl, index);
+      if (featuredMediaId === null) featuredMediaId = media.id;
+      mediaHtml += `<p><img src="${media.url}" alt="" /></p>\n`;
+    } catch (err) {
+      console.warn(`  [photo] не удалось загрузить ${photoUrl}: ${err.message}`);
+    }
+  }
+
   const body = {
     title: post.title,
-    content: `${post.content}\n<p><em>Першоджерело: <a href="${post.url}" rel="nofollow noopener" target="_blank">${post.url}</a></em></p>`,
+    content: `${mediaHtml}${post.content}\n<p><em>Першоджерело: <a href="${post.url}" rel="nofollow noopener" target="_blank">${post.url}</a></em></p>`,
     slug: slugify(post.title) || `post-${post.msgId}`,
     status: "publish",
     date: post.date.toISOString().replace(/\.\d{3}Z$/, ""),
     comment_status: "closed",
+    ...(featuredMediaId ? { featured_media: featuredMediaId } : {}),
   };
 
   const res = await fetch(`${WP_BASE_URL}/wp-json/wp/v2/posts`, {
