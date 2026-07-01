@@ -1,0 +1,15 @@
+/* Стили блоков БЕРЕЗА в редакторе Gutenberg */
+
+.editor-styles-wrapper .bereza-block-preview {
+  border: 2px dashed #d4ff3a;
+  background: #0e0e0c;
+  padding: 8px;
+  min-height: 60px;
+}
+
+/* Чтобы server-side render блоков нормально выглядел в редакторе */
+.editor-styles-wrapper .quote-section,
+.editor-styles-wrapper .hero-main,
+.editor-styles-wrapper .subscribe {
+  pointer-events: none;
+}

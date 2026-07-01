@@ -1,0 +1,80 @@
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.25) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 1px;
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+}
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  position: relative;
+  z-index: 5;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin: 0 0 22px;
+}
+.section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+.section-label strong { color: var(--accent); font-weight: 500; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* WordPress alignment classes */
+.alignwide  { margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); }
+.alignfull  { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); width: 100vw; }
+.aligncenter { text-align: center; }
+
+/* WordPress captions */
+.wp-caption { max-width: 100%; }
+.wp-caption-text { font-family: var(--f-mono); font-size: 12px; color: var(--ink-dim); margin-top: 8px; }
+
+/* Pagination */
+.nav-links { display: flex; gap: 8px; margin-top: 40px; }
+.nav-links a, .nav-links span {
+  font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.15em;
+  padding: 10px 16px; border: 1px solid var(--rule); color: var(--ink-dim);
+  transition: all var(--t-base);
+}
+.nav-links a:hover, .nav-links .current {
+  background: var(--accent); color: var(--paper-ink); border-color: var(--accent);
+}

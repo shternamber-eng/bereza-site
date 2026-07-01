@@ -1,0 +1,25 @@
+:root {
+  --bg: #0e0e0c;
+  --bg-elev: #15161a;
+  --ink: #f3f1ea;
+  --ink-dim: #a8a59c;
+  --rule: #2a2a28;
+
+  --accent: #d4ff3a;
+  --accent-2: #ff4422;
+  --paper: #efe9dc;
+  --paper-ink: #14130f;
+
+  --f-display: 'Unbounded', system-ui, sans-serif;
+  --f-body: 'Spectral', Georgia, serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --container: 1440px;
+  --gutter: 32px;
+  --gutter-sm: 16px;
+
+  --t-fast: .15s;
+  --t-base: .25s;
+  --t-slow: .4s;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}

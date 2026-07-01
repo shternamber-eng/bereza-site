@@ -160,9 +160,14 @@ async function collectNewTelegramPosts(afterId) {
       if (!plain.trim()) continue;
 
       const dateMatch = block.match(/<time datetime="([^"]+)"/);
-      const photos = [...block.matchAll(/class="tgme_widget_message_photo_wrap[^"]*"\s+style="[^"]*background-image:url\('([^']+)'\)/g)].map(
+      // Атрибут href может стоять между class и style (одиночные фото) —
+      // в отличие от групповых альбомов, где style идёт сразу после class.
+      const photos = [...block.matchAll(/<a class="tgme_widget_message_photo_wrap[^"]*"[^>]*style="[^"]*background-image:url\('([^']+)'\)/g)].map(
         (m) => m[1]
       );
+      // Превью видео отдаёт ссылку на mp4 прямо в HTML (дублируется в блюр- и
+      // обычном <video> теге с одинаковым src) — берём уникальные ссылки.
+      const videos = [...new Set([...block.matchAll(/<video src="([^"]+)"/g)].map((m) => m[1]))];
 
       found.push({
         msgId,
@@ -171,6 +176,7 @@ async function collectNewTelegramPosts(afterId) {
         date: dateMatch ? new Date(dateMatch[1]) : new Date(),
         content,
         photos,
+        videos,
       });
     }
 
@@ -216,6 +222,30 @@ async function uploadPhotoToWp(url, index) {
   return { id: json.id, url: json.source_url };
 }
 
+async function uploadVideoToWp(url, index) {
+  const res = await fetch(url, { headers: { "User-Agent": UA } });
+  if (!res.ok) throw new Error(`HTTP ${res.status} при скачивании видео`);
+  const buffer = Buffer.from(await res.arrayBuffer());
+  const contentType = res.headers.get("content-type") || "video/mp4";
+
+  const uploadRes = await fetch(`${WP_BASE_URL}/wp-json/wp/v2/media`, {
+    method: "POST",
+    headers: {
+      "Content-Type": contentType,
+      "Content-Disposition": `attachment; filename="telegram-${Date.now()}-${index}.mp4"`,
+      Authorization: authHeader(),
+    },
+    body: buffer,
+  });
+
+  if (!uploadRes.ok) {
+    const text = await uploadRes.text();
+    throw new Error(`HTTP ${uploadRes.status}: ${text.slice(0, 200)}`);
+  }
+  const json = await uploadRes.json();
+  return { id: json.id, url: json.source_url };
+}
+
 async function publishPost(post) {
   let mediaHtml = "";
   let featuredMediaId = null;
@@ -227,6 +257,15 @@ async function publishPost(post) {
       mediaHtml += `<p><img src="${media.url}" alt="" /></p>\n`;
     } catch (err) {
       console.warn(`  [photo] не удалось загрузить ${photoUrl}: ${err.message}`);
+    }
+  }
+
+  for (const [index, videoUrl] of post.videos.entries()) {
+    try {
+      const media = await uploadVideoToWp(videoUrl, index);
+      mediaHtml += `<p><video controls src="${media.url}"></video></p>\n`;
+    } catch (err) {
+      console.warn(`  [video] не удалось загрузить ${videoUrl}: ${err.message}`);
     }
   }
 
