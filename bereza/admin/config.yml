@@ -161,8 +161,6 @@ collections:
               - { label: Номер випуску, name: issueNumber, widget: string }
               - { label: День тижня (напр. "Вівторок"), name: dayOfWeek, widget: string }
               - { label: "Дата (напр. «29 квітня 2026»)", name: date, widget: string }
-              - { label: Місто, name: city, widget: string, default: "Київ" }
-              - { label: "Температура (напр. «9°C»)", name: temperature, widget: string }
               - { label: "Тираж (напр. «184 700»)", name: circulation, widget: string }
 
   # ----------------------------------------------------------

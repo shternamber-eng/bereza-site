@@ -20,7 +20,7 @@
     const metaR = document.querySelector('.meta-r');
     if (metaR) {
       metaR.innerHTML =
-        `${esc(m.city)} · <strong>${esc(m.temperature)}</strong><br>Тираж · ${esc(m.circulation)} читачів`;
+        `Тираж · ${esc(m.circulation)} читачів`;
     }
   }
 
