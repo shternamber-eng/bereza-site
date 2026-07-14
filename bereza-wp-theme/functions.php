@@ -145,6 +145,23 @@ function bereza_date(string $format = 'd.m.Y', $post_id = null): string {
     return get_the_date($format, $post_id);
 }
 
+/**
+ * Превью відео: featured image поста, а якщо його немає —
+ * автоматично мініатюра з YouTube за посиланням.
+ */
+function bereza_video_thumb_url(int $post_id, string $image_size = 'bereza-card'): string {
+    if (has_post_thumbnail($post_id)) {
+        return get_the_post_thumbnail_url($post_id, $image_size) ?: '';
+    }
+
+    $yt_url = bereza_field('youtube_url', $post_id, '');
+    if (preg_match('~(?:youtu\.be/|youtube\.com/(?:watch\?v=|embed/|shorts/))([A-Za-z0-9_-]{11})~', $yt_url, $m)) {
+        return "https://i.ytimg.com/vi/{$m[1]}/hqdefault.jpg";
+    }
+
+    return '';
+}
+
 // ── Размеры миниатюр ──────────────────────────────────────────────────────────
 add_action('after_setup_theme', function () {
     add_image_size('bereza-hero',  1400, 800, true);

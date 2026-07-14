@@ -24,8 +24,9 @@ $smalls  = array_slice($posts, 1);
       <article class="video-card large">
         <a href="<?php echo esc_url($yt_url ?: get_permalink($large->ID)); ?>">
           <div class="video-thumb">
-            <?php if (has_post_thumbnail($large->ID)): ?>
-              <img src="<?php echo esc_url(get_the_post_thumbnail_url($large->ID, 'bereza-hero')); ?>" alt="" loading="lazy" />
+            <?php $thumb = bereza_video_thumb_url($large->ID, 'bereza-hero'); ?>
+            <?php if ($thumb): ?>
+              <img src="<?php echo esc_url($thumb); ?>" alt="" loading="lazy" />
             <?php endif; ?>
             <?php if ($duration): ?>
               <span class="duration"><?php echo esc_html($duration); ?></span>
@@ -47,8 +48,9 @@ $smalls  = array_slice($posts, 1);
         <article class="video-card">
           <a href="<?php echo esc_url($yu ?: get_permalink($v->ID)); ?>">
             <div class="video-thumb">
-              <?php if (has_post_thumbnail($v->ID)): ?>
-                <img src="<?php echo esc_url(get_the_post_thumbnail_url($v->ID, 'bereza-card')); ?>" alt="" loading="lazy" />
+              <?php $vthumb = bereza_video_thumb_url($v->ID); ?>
+              <?php if ($vthumb): ?>
+                <img src="<?php echo esc_url($vthumb); ?>" alt="" loading="lazy" />
               <?php endif; ?>
               <?php if ($d): ?>
                 <span class="duration"><?php echo esc_html($d); ?></span>
