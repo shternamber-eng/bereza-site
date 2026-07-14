@@ -30,14 +30,7 @@ $side_query = new WP_Query([
   <div class="hero-grid">
 
     <!-- Головний матеріал -->
-    <?php
-    $hero_img_style = '';
-    if ($hero_query->have_posts() && has_post_thumbnail($hero_query->posts[0]->ID)) {
-        $hero_img_url   = get_the_post_thumbnail_url($hero_query->posts[0]->ID, 'bereza-hero');
-        $hero_img_style = " style=\"--hero-img: url('" . esc_url($hero_img_url) . "')\"";
-    }
-    ?>
-    <article class="hero-main"<?php echo $hero_img_style; ?>>
+    <article class="hero-main">
       <?php if ($hero_query->have_posts()): $hero_query->the_post(); ?>
         <span class="monogram" aria-hidden="true">Б</span>
 
@@ -80,9 +73,6 @@ $side_query = new WP_Query([
           $cat = bereza_get_tag(get_post());
       ?>
         <a class="item" href="<?php the_permalink(); ?>">
-          <?php if (has_post_thumbnail()): ?>
-            <img class="item-thumb" src="<?php echo esc_url(get_the_post_thumbnail_url(get_the_ID(), 'bereza-thumb')); ?>" alt="" loading="lazy" />
-          <?php endif; ?>
           <div class="item-body">
             <div class="row1">
               <span class="num"><?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?></span>
