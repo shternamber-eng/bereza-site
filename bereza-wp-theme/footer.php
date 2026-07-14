@@ -32,10 +32,8 @@
         <ul>
           <?php
           $email_main = bereza_field('email_main', 'option', 'hello@bereza.media');
-          $email_tip  = bereza_field('email_tip', 'option', 'tip@bereza.media');
           ?>
           <li><a href="mailto:<?php echo esc_attr($email_main); ?>"><?php echo esc_html($email_main); ?></a></li>
-          <li><a href="mailto:<?php echo esc_attr($email_tip); ?>"><?php echo esc_html($email_tip); ?></a></li>
         </ul>
       </div>
     </div>
