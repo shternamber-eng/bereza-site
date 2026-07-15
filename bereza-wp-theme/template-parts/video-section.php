@@ -1,13 +1,9 @@
 <?php
-$videos_query = new WP_Query([
-    'post_type'      => 'video',
-    'posts_per_page' => 3,
-]);
-if (!$videos_query->have_posts()) return;
+$videos = bereza_get_youtube_videos(3);
+if (empty($videos)) return;
 
-$posts   = $videos_query->posts;
-$large   = $posts[0];
-$smalls  = array_slice($posts, 1);
+$large  = $videos[0];
+$smalls = array_slice($videos, 1);
 ?>
 
 <section class="video-section">
@@ -16,53 +12,36 @@ $smalls  = array_slice($posts, 1);
     <div class="video-grid">
 
       <!-- Велика карточка -->
-      <?php
-      $duration  = bereza_field('duration', $large->ID, '');
-      $view_meta = bereza_field('view_meta', $large->ID, '');
-      $yt_url    = bereza_field('youtube_url', $large->ID, '#');
-      ?>
       <article class="video-card large">
-        <a href="<?php echo esc_url($yt_url ?: get_permalink($large->ID)); ?>">
+        <a href="<?php echo esc_url($large['url']); ?>" target="_blank" rel="noopener">
           <div class="video-thumb">
-            <?php $thumb = bereza_video_thumb_url($large->ID, 'bereza-hero'); ?>
-            <?php if ($thumb): ?>
-              <img src="<?php echo esc_url($thumb); ?>" alt="" loading="lazy" />
-            <?php endif; ?>
-            <?php if ($duration): ?>
-              <span class="duration"><?php echo esc_html($duration); ?></span>
+            <?php if ($large['thumbnail']): ?>
+              <img src="<?php echo esc_url($large['thumbnail']); ?>" alt="" loading="lazy" />
             <?php endif; ?>
           </div>
-          <h3><?php echo esc_html($large->post_title); ?></h3>
-          <?php if ($view_meta): ?>
-            <div class="vmeta"><?php echo esc_html($view_meta); ?></div>
+          <h3><?php echo esc_html($large['title']); ?></h3>
+          <?php if ($large['published']): ?>
+            <div class="vmeta"><?php echo esc_html(date_i18n('d.m.Y', strtotime($large['published']))); ?></div>
           <?php endif; ?>
         </a>
       </article>
 
       <!-- Малі карточки -->
-      <?php foreach ($smalls as $v):
-        $d  = bereza_field('duration', $v->ID, '');
-        $vm = bereza_field('view_meta', $v->ID, '');
-        $yu = bereza_field('youtube_url', $v->ID, '#');
-      ?>
+      <?php foreach ($smalls as $v): ?>
         <article class="video-card">
-          <a href="<?php echo esc_url($yu ?: get_permalink($v->ID)); ?>">
+          <a href="<?php echo esc_url($v['url']); ?>" target="_blank" rel="noopener">
             <div class="video-thumb">
-              <?php $vthumb = bereza_video_thumb_url($v->ID); ?>
-              <?php if ($vthumb): ?>
-                <img src="<?php echo esc_url($vthumb); ?>" alt="" loading="lazy" />
-              <?php endif; ?>
-              <?php if ($d): ?>
-                <span class="duration"><?php echo esc_html($d); ?></span>
+              <?php if ($v['thumbnail']): ?>
+                <img src="<?php echo esc_url($v['thumbnail']); ?>" alt="" loading="lazy" />
               <?php endif; ?>
             </div>
-            <h3><?php echo esc_html($v->post_title); ?></h3>
-            <?php if ($vm): ?>
-              <div class="vmeta"><?php echo esc_html($vm); ?></div>
+            <h3><?php echo esc_html($v['title']); ?></h3>
+            <?php if ($v['published']): ?>
+              <div class="vmeta"><?php echo esc_html(date_i18n('d.m.Y', strtotime($v['published']))); ?></div>
             <?php endif; ?>
           </a>
         </article>
-      <?php endforeach; wp_reset_postdata(); ?>
+      <?php endforeach; ?>
 
     </div>
   </div>

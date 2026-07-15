@@ -146,20 +146,49 @@ function bereza_date(string $format = 'd.m.Y', $post_id = null): string {
 }
 
 /**
- * Превью відео: featured image поста, а якщо його немає —
- * автоматично мініатюра з YouTube за посиланням.
+ * Тягне останні відео з YouTube-каналу через публічний RSS-фід
+ * (без потреби в API-ключі). Кешується на годину через transient.
  */
-function bereza_video_thumb_url(int $post_id, string $image_size = 'bereza-card'): string {
-    if (has_post_thumbnail($post_id)) {
-        return get_the_post_thumbnail_url($post_id, $image_size) ?: '';
+function bereza_get_youtube_videos(int $limit = 3): array {
+    $channel_id = bereza_opt('youtube_channel_id', 'UCWTGZEIgCCjr0K07KJzae7g');
+    $cache_key  = 'bereza_yt_videos_' . md5($channel_id);
+
+    $videos = get_transient($cache_key);
+    if ($videos === false) {
+        $videos = [];
+
+        $response = wp_remote_get(
+            'https://www.youtube.com/feeds/videos.xml?channel_id=' . rawurlencode($channel_id),
+            ['timeout' => 8]
+        );
+
+        if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
+            $xml = simplexml_load_string(wp_remote_retrieve_body($response));
+            if ($xml !== false) {
+                $yt_ns    = 'http://www.youtube.com/xml/schemas/2015';
+                $media_ns = 'http://search.yahoo.com/mrss/';
+
+                foreach ($xml->entry as $entry) {
+                    $entry_yt    = $entry->children($yt_ns);
+                    $media_group = $entry->children($media_ns)->group;
+                    $video_id    = (string) $entry_yt->videoId;
+                    if (!$video_id) continue;
+
+                    $videos[] = [
+                        'id'        => $video_id,
+                        'title'     => (string) $entry->title,
+                        'url'       => 'https://www.youtube.com/watch?v=' . $video_id,
+                        'thumbnail' => (string) $media_group->thumbnail->attributes()->url,
+                        'published' => (string) $entry->published,
+                    ];
+                }
+            }
+        }
+
+        set_transient($cache_key, $videos, HOUR_IN_SECONDS);
     }
 
-    $yt_url = bereza_field('youtube_url', $post_id, '');
-    if (preg_match('~(?:youtu\.be/|youtube\.com/(?:watch\?v=|embed/|shorts/))([A-Za-z0-9_-]{11})~', $yt_url, $m)) {
-        return "https://i.ytimg.com/vi/{$m[1]}/hqdefault.jpg";
-    }
-
-    return '';
+    return array_slice($videos, 0, $limit);
 }
 
 // ── Размеры миниатюр ──────────────────────────────────────────────────────────
