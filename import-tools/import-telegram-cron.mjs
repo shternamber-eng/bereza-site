@@ -313,6 +313,13 @@ async function main() {
   console.log(`Известный lastId = ${state.lastId}. Ищу новые посты...`);
   const { posts, maxId } = await collectNewTelegramPosts(state.lastId);
 
+  // lastId должен продвигаться только мимо постов, которые реально опубликовались.
+  // Иначе при сбое публикации (например, протухший WP_APP_PASSWORD) пост будет
+  // молча помечен как обработанный и потерян навсегда, а прогон всё равно
+  // завершится с exit code 0, скрывая проблему.
+  let newLastId = state.lastId;
+  let hadFailure = false;
+
   if (posts.length === 0) {
     console.log("Новых постов нет.");
   } else {
@@ -321,15 +328,28 @@ async function main() {
       try {
         const id = await publishPost(post);
         console.log(`  OK  post #${id}  ${post.title}`);
+        newLastId = post.msgId;
       } catch (err) {
         console.error(`  FAIL  ${post.title}: ${err.message}`);
+        hadFailure = true;
+        break; // не пропускаем более новые посты вперёд неопубликованного
       }
     }
   }
 
-  if (maxId !== state.lastId) {
-    await saveState({ lastId: maxId });
-    console.log(`Обновлён lastId = ${maxId}.`);
+  if (!hadFailure && maxId !== newLastId) {
+    // Постов без текста (фото/видео без підпису) на этой странице больше не
+    // было — можно безопасно продвинуть lastId до maxId, увиденного в ленте.
+    newLastId = maxId;
+  }
+
+  if (newLastId !== state.lastId) {
+    await saveState({ lastId: newLastId });
+    console.log(`Обновлён lastId = ${newLastId}.`);
+  }
+
+  if (hadFailure) {
+    process.exitCode = 1;
   }
 }
 
