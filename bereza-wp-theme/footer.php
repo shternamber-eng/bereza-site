@@ -12,7 +12,6 @@
         <ul>
           <li><a href="<?php echo esc_url(home_url('/kolumny/')); ?>">Колонки</a></li>
           <li><a href="<?php echo esc_url(home_url('/rozsliduvannya/')); ?>">Розслідування</a></li>
-          <li><a href="<?php echo esc_url(home_url('/podkast/')); ?>">Подкаст</a></li>
           <li><a href="<?php echo esc_url(home_url('/arkhiv/')); ?>">Архів</a></li>
         </ul>
       </div>

@@ -74,7 +74,6 @@ $date_str  = "$day {$months_uk[$mon]} $year";
       <li><a href="<?php echo esc_url(home_url('/kolumny/')); ?>" <?php echo is_post_type_archive('kolumna') ? 'class="active"' : ''; ?>>Колонки</a></li>
       <li><a href="<?php echo esc_url(home_url('/rozsliduvannya/')); ?>" <?php echo is_post_type_archive('rozsliduvannya') ? 'class="active"' : ''; ?>>Розслідування</a></li>
       <li><a href="<?php echo esc_url(home_url('/video/')); ?>" <?php echo is_post_type_archive('video') ? 'class="active"' : ''; ?>>Відео</a></li>
-      <li><a href="<?php echo esc_url(home_url('/podkast/')); ?>" <?php echo is_post_type_archive('podkast') ? 'class="active"' : ''; ?>>Подкаст</a></li>
       <li><a href="<?php echo esc_url(get_page_link(get_page_by_path('pro-avtora'))); ?>" <?php echo is_page('pro-avtora') ? 'class="active"' : ''; ?>>Про автора</a></li>
     </ul>
     <button class="search-btn js-search-toggle" aria-label="Пошук">Пошук <span aria-hidden="true">↗</span></button>
