@@ -3,7 +3,7 @@ defined('ABSPATH') || exit;
 
 // ── Meta description + Open Graph / Twitter Card для статей ───────────────────
 add_action('wp_head', function () {
-    if (!is_singular()) return;
+    if (!is_singular() || is_front_page()) return;
 
     $post_id     = get_the_ID();
     $description = bereza_field('lede', $post_id) ?: get_the_excerpt();
@@ -29,6 +29,79 @@ add_action('wp_head', function () {
     }
     printf('<meta name="twitter:card" content="%s">' . "\n", $image ? 'summary_large_image' : 'summary');
 }, 5);
+
+// ── Meta description для головної сторінки ─────────────────────────────────────
+add_action('wp_head', function () {
+    if (!is_front_page()) return;
+
+    $name = bereza_opt('person_full_name', 'Борислав Береза');
+    $description = sprintf(
+        '%s — офіційний сайт: колонки, розслідування та відео. Актуальні новини, позиція та контакти.',
+        $name
+    );
+
+    printf('<meta name="description" content="%s">' . "\n", esc_attr($description));
+    printf('<meta property="og:type" content="website">' . "\n");
+    printf('<meta property="og:title" content="%s | Офіційний сайт">' . "\n", esc_attr($name));
+    printf('<meta property="og:description" content="%s">' . "\n", esc_attr($description));
+    printf('<meta property="og:url" content="%s">' . "\n", esc_url(home_url('/')));
+}, 5);
+
+// ── Title сторінки: "Ім'я | Офіційний сайт" на головній ────────────────────────
+add_filter('document_title_parts', function (array $parts): array {
+    if (!is_front_page()) return $parts;
+
+    $name = bereza_opt('person_full_name', 'Борислав Береза');
+    return [
+        'title' => "$name | Офіційний сайт",
+    ];
+});
+
+// ── Структурированные данные Person (JSON-LD) — головна сторінка ───────────────
+add_action('wp_head', function () {
+    if (!is_front_page()) return;
+
+    $name  = bereza_opt('person_full_name', 'Борислав Береза');
+    $job   = bereza_opt('person_job_title', '');
+    $wiki  = bereza_opt('person_wikipedia_url', '');
+    $photo = bereza_opt('person_photo_url', '');
+
+    if (!$photo) {
+        $about_page = get_page_by_path('pro-avtora');
+        if ($about_page && has_post_thumbnail($about_page->ID)) {
+            $photo = get_the_post_thumbnail_url($about_page->ID, 'bereza-hero');
+        }
+    }
+
+    $same_as = [];
+    $channels_raw = bereza_opt('channels', '');
+    $channels = $channels_raw ? json_decode($channels_raw, true) : [];
+    if (is_array($channels)) {
+        foreach ($channels as $ch) {
+            if (!empty($ch['url'])) {
+                $same_as[] = esc_url_raw($ch['url']);
+            }
+        }
+    }
+    if ($wiki) {
+        $same_as[] = esc_url_raw($wiki);
+    }
+
+    $data = [
+        '@context' => 'https://schema.org',
+        '@type'    => 'Person',
+        'name'     => $name,
+        'url'      => home_url('/'),
+    ];
+
+    if ($job)     $data['jobTitle'] = $job;
+    if ($photo)   $data['image']    = $photo;
+    if ($same_as) $data['sameAs']   = array_values(array_unique($same_as));
+
+    echo '<script type="application/ld+json">'
+        . wp_json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        . '</script>' . "\n";
+}, 6);
 
 // ── Структурированные данные NewsArticle (JSON-LD) ─────────────────────────────
 add_action('wp_head', function () {

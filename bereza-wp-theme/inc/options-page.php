@@ -25,6 +25,7 @@ function bereza_register_settings(): void {
         'quote_text', 'quote_source',
         'email_main', 'email_tip', 'pgp_url', 'secure_drop_url',
         'mailerlite_key', 'mailerlite_group',
+        'person_full_name', 'person_job_title', 'person_photo_url', 'person_wikipedia_url',
     ];
     foreach ($simple as $key) {
         register_setting('bereza_options', "bereza_$key", ['sanitize_callback' => 'sanitize_text_field']);
@@ -78,6 +79,11 @@ function bereza_render_options_page(): void {
     $sd       = bereza_opt('secure_drop_url', '');
     $ml_key   = bereza_opt('mailerlite_key',   '');
     $ml_group = bereza_opt('mailerlite_group', '');
+
+    $p_name = bereza_opt('person_full_name',    'Борислав Береза');
+    $p_job  = bereza_opt('person_job_title',    'Політик, громадський діяч');
+    $p_wiki = bereza_opt('person_wikipedia_url', '');
+    $p_photo = bereza_opt('person_photo_url',   '');
 
     $ticker_raw   = bereza_opt('ticker_items', '');
     $ticker_items = $ticker_raw ? json_decode($ticker_raw, true) : [['text' => 'Прямий ефір на YouTube — щосереди о 20:00']];
@@ -172,6 +178,23 @@ function bereza_render_options_page(): void {
             </table>
           </section>
 
+          <!-- ── ОСОБА (SEO Person) ── -->
+          <section class="bereza-section">
+            <h2>Особа (Schema.org Person)</h2>
+            <p class="description" style="margin-bottom:12px">Використовується для структурованих даних на головній сторінці. Посилання на соцмережі беруться автоматично з блоку «Соціальні мережі» вище.</p>
+            <table class="form-table">
+              <tr><th><label for="bo_pname">Повне ім'я</label></th>
+                  <td><input id="bo_pname" type="text" name="bereza_person_full_name" value="<?php echo esc_attr($p_name); ?>" class="regular-text"></td></tr>
+              <tr><th><label for="bo_pjob">Посада / рід діяльності</label></th>
+                  <td><input id="bo_pjob" type="text" name="bereza_person_job_title" value="<?php echo esc_attr($p_job); ?>" class="regular-text"></td></tr>
+              <tr><th><label for="bo_pphoto">URL фото (для schema)</label></th>
+                  <td><input id="bo_pphoto" type="url" name="bereza_person_photo_url" value="<?php echo esc_attr($p_photo); ?>" placeholder="https://…" class="regular-text">
+                      <p class="description">Якщо не вказано — використовується зображення сторінки «Про автора».</p></td></tr>
+              <tr><th><label for="bo_pwiki">Посилання на Вікіпедію</label></th>
+                  <td><input id="bo_pwiki" type="url" name="bereza_person_wikipedia_url" value="<?php echo esc_attr($p_wiki); ?>" placeholder="https://uk.wikipedia.org/wiki/…" class="regular-text"></td></tr>
+            </table>
+          </section>
+
           <!-- ── MAILERLITE ── -->
           <section class="bereza-section">
             <h2>MailerLite (підписка)</h2>
@@ -206,6 +229,10 @@ function bereza_save_options(): void {
         'secure_drop_url'   => 'esc_url_raw',
         'mailerlite_key'    => 'sanitize_text_field',
         'mailerlite_group'  => 'sanitize_text_field',
+        'person_full_name'    => 'sanitize_text_field',
+        'person_job_title'    => 'sanitize_text_field',
+        'person_photo_url'    => 'esc_url_raw',
+        'person_wikipedia_url' => 'esc_url_raw',
     ];
     foreach ($simple as $key => $sanitizer) {
         if (array_key_exists("bereza_$key", $_POST)) {

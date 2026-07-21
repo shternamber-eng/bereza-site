@@ -56,7 +56,14 @@ $date_str  = "$day {$months_uk[$mon]} $year";
     <div class="meta-l">№ <?php echo esc_html($issue_num); ?> · <?php echo esc_html($day_label); ?><br><strong><?php echo esc_html($date_str); ?></strong></div>
     <div class="logo">
       <div class="kicker">особистий медіа-проєкт</div>
-      <h1><a href="<?php echo esc_url(home_url('/')); ?>">БЕРЕЗА<span>.</span></a></h1>
+      <h1>
+        <a href="<?php echo esc_url(home_url('/')); ?>">
+          БЕРЕЗА<span>.</span>
+          <?php if (is_front_page()): ?>
+            <span class="visually-hidden"><?php echo esc_html(bereza_opt('person_full_name', 'Борислав Береза')); ?> — офіційний сайт</span>
+          <?php endif; ?>
+        </a>
+      </h1>
       <div class="subline">Колонки · Розслідування · Розмови</div>
     </div>
     <div class="meta-r">Тираж · <?php echo esc_html($readers); ?> читачів</div>
